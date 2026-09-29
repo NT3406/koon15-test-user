@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Koon15 Test User</title>
+</head>
+
+<body>
+
+  <h2>Koon15 Test User</h2>
+
+  <p id="status">กำลังโหลด LIFF...</p>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <script>
+
+    async function main() {
+
+      const status = document.getElementById('status');
+
+      try {
+
+        status.innerText =
+          '1. กำลังเริ่ม LIFF...';
+
+        await liff.init({
+          liffId: '2011211599-Yc8XcQ9U'
+        });
+
+        status.innerText =
+          '2. LIFF.init() สำเร็จ';
+
+        if (!liff.isInClient() && !liff.isLoggedIn()) {
+
+          status.innerText =
+            '3. กำลังเข้าสู่ระบบ LINE...';
+
+          liff.login();
+
+          return;
+        }
+
+        status.innerText =
+          '4. เข้าสู่ระบบแล้ว';
+
+        const profile = await liff.getProfile();
+
+        status.innerHTML =
+          '<h3>✅ สำเร็จ</h3>' +
+          '<p>LINE User ID:</p>' +
+          '<strong>' + profile.userId + '</strong>' +
+          '<p>ชื่อ LINE:</p>' +
+          '<strong>' + profile.displayName + '</strong>';
+
+      } catch (error) {
+
+        status.innerHTML =
+          '<h3>❌ เกิดข้อผิดพลาด</h3>' +
+          '<p>ชื่อ: ' + error.name + '</p>' +
+          '<p>ข้อความ: ' + error.message + '</p>';
+
+      }
+
+    }
+
+    main();
+
+  </script>
+
+</body>
+</html>
