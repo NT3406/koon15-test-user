@@ -10,11 +10,17 @@
 
   <h2>Koon15 Test User</h2>
 
-  <p id="status">กำลังโหลด LIFF...</p>
+  <p id="status">กำลังเริ่มต้น...</p>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <script>
+
+    const LIFF_ID = '2011211599-Yc8XcQ9U';
+
+    const GAS_URL =
+      'https://script.google.com/macros/s/AKfycbyl2tAxfP0cyqOC3_iJKac8uPswPZ618sFJVvwfpfxhHOHs2ECcf8STPp5Idfw4RKzOdg/exec';
+
 
     async function main() {
 
@@ -26,44 +32,87 @@
           '1. กำลังเริ่ม LIFF...';
 
         await liff.init({
-          liffId: '2011211599-Yc8XcQ9U'
+          liffId: LIFF_ID
         });
 
-        status.innerText =
-          '2. LIFF.init() สำเร็จ';
 
         if (!liff.isInClient() && !liff.isLoggedIn()) {
 
           status.innerText =
-            '3. กำลังเข้าสู่ระบบ LINE...';
+            '2. กำลังเข้าสู่ระบบ LINE...';
 
           liff.login();
 
           return;
         }
 
-        status.innerText =
-          '4. เข้าสู่ระบบแล้ว';
 
-        const profile = await liff.getProfile();
+        status.innerText =
+          '3. กำลังสร้าง ID Token...';
+
+        const idToken = liff.getIDToken();
+
+        if (!idToken) {
+          throw new Error(
+            'ไม่พบ ID Token'
+          );
+        }
+
+
+        status.innerText =
+          '4. กำลังส่งข้อมูลไป Google Sheet...';
+
+
+        const response = await fetch(
+          GAS_URL,
+          {
+            method: 'POST',
+
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
+
+            body: JSON.stringify({
+              idToken: idToken
+            })
+          }
+        );
+
+
+        const result =
+          await response.json();
+
+
+        if (!result.success) {
+
+          throw new Error(
+            result.error || 'Google Sheet ไม่ตอบกลับสำเร็จ'
+          );
+
+        }
+
 
         status.innerHTML =
           '<h3>✅ สำเร็จ</h3>' +
-          '<p>LINE User ID:</p>' +
-          '<strong>' + profile.userId + '</strong>' +
+          '<p>บันทึก LINE User ID แล้ว</p>' +
           '<p>ชื่อ LINE:</p>' +
-          '<strong>' + profile.displayName + '</strong>';
+          '<strong>' +
+          result.displayName +
+          '</strong>';
+
 
       } catch (error) {
 
         status.innerHTML =
           '<h3>❌ เกิดข้อผิดพลาด</h3>' +
-          '<p>ชื่อ: ' + error.name + '</p>' +
-          '<p>ข้อความ: ' + error.message + '</p>';
+          '<p>' +
+          error.message +
+          '</p>';
 
       }
 
     }
+
 
     main();
 
