@@ -1,13 +1,194 @@
+```html
 <!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Koon15 Parking - สมัครลูกค้าใหม่</title>
+  <title>Koon15 Parking - ลงทะเบียนลูกค้าใหม่</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      font-family: Arial, sans-serif;
+      background: #f3f6fb;
+      color: #243247;
+    }
+
+    .container {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .header {
+      padding: 24px;
+      background: #17365d;
+      color: white;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .header p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .form-card {
+      padding: 24px;
+      background: white;
+      border-radius: 0 0 14px 14px;
+      box-shadow: 0 4px 18px #0000000d;
+    }
+
+    .notice {
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      background: #fff8e6;
+      color: #805b00;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd5e0;
+      border-radius: 8px;
+      background: white;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #17365d;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-button:disabled {
+      background: #9aa8ba;
+      cursor: not-allowed;
+    }
+
+    #status {
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+  </style>
 </head>
+
 <body>
-  <h2>Koon15 Parking</h2>
-  <p>หน้าลงทะเบียนลูกค้าใหม่</p>
-  <p>ทดสอบหน้าเว็บสำเร็จ</p>
+  <main class="container">
+    <header class="header">
+      <h1>Koon15 Parking</h1>
+      <p>ระบบลงทะเบียนลูกค้าใหม่</p>
+    </header>
+
+    <section class="form-card">
+      <div class="notice">
+        กรุณากรอกข้อมูลให้ครบถ้วน
+        หน้านี้เป็นแบบฟอร์มทดสอบและยังไม่บันทึกข้อมูลจริง
+      </div>
+
+      <form id="registrationForm">
+        <div class="field">
+          <label for="firstName">ชื่อ *</label>
+          <input id="firstName" name="firstName"
+                 type="text" required>
+        </div>
+
+        <div class="field">
+          <label for="lastName">นามสกุล *</label>
+          <input id="lastName" name="lastName"
+                 type="text" required>
+        </div>
+
+        <div class="field">
+          <label for="nickname">ชื่อเล่น</label>
+          <input id="nickname" name="nickname"
+                 type="text">
+        </div>
+
+        <div class="field">
+          <label for="phone">เบอร์โทรศัพท์ *</label>
+          <input id="phone" name="phone"
+                 type="tel" inputmode="tel"
+                 autocomplete="tel" required>
+        </div>
+
+        <div class="field">
+          <label for="address">ที่อยู่ *</label>
+          <textarea id="address" name="address"
+                    required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="slot">ช่องจอดที่ต้องการ *</label>
+          <select id="slot" name="slot" required>
+            <option value="">กรุณาเลือกช่องจอด</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="startDate">วันที่เริ่มใช้บริการ *</label>
+          <input id="startDate" name="startDate"
+                 type="date" required>
+        </div>
+
+        <button class="submit-button" type="submit">
+          ตรวจสอบข้อมูล
+        </button>
+      </form>
+
+      <div id="status" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const statusBox = document.getElementById('status');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      statusBox.textContent =
+        'แบบฟอร์มทดสอบ: ยังไม่ได้เชื่อมต่อ LINE LIFF และ Google Sheets';
+
+      statusBox.style.color = '#805b00';
+    });
+  </script>
 </body>
 </html>
+```
